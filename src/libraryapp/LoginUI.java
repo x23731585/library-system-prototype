@@ -10,6 +10,7 @@ package libraryapp;
  * @author Alexb
  */
 public class LoginUI extends javax.swing.JFrame {
+    private LibraryApp library;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginUI.class.getName());
 
@@ -18,6 +19,8 @@ public class LoginUI extends javax.swing.JFrame {
      */
     public LoginUI() {
         initComponents();
+        library = new LibraryApp();
+        jLabel4.setText("");
     }
 
     /**
@@ -39,7 +42,6 @@ public class LoginUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPasswordField1.setText("jPasswordField1");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
@@ -60,8 +62,6 @@ public class LoginUI extends javax.swing.JFrame {
         });
 
         jLabel2.setText("PASSWORD");
-
-        jLabel4.setText("jLabel4");
 
         jLabel1.setText("USERNAME ");
 
@@ -92,9 +92,9 @@ public class LoginUI extends javax.swing.JFrame {
                         .addGap(162, 162, 162)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                        .addGap(122, 122, 122)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,8 +111,8 @@ public class LoginUI extends javax.swing.JFrame {
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
         );
 
@@ -128,7 +128,31 @@ public class LoginUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+         // get user input
+    String username = jTextField1.getText().trim();
+    String password = new String(jPasswordField1.getPassword()).trim();
+
+    // basic validation
+    if (username.isEmpty() || password.isEmpty()) {
+        jLabel4.setText("Enter username and password");
+        return;
+    }
+
+    // call backend login()
+    boolean loginValidation = library.login(username, password);
+
+    //if login is validated correctly opens MainUI
+    if (loginValidation) {
+    jLabel4.setText("Login successful");
+
+    MainUI main = new MainUI(library); // pass the same instance
+    main.setVisible(true);
+    this.dispose();
+
+    } else {
+        jLabel4.setText("Invalid login. Try again.");
+        jPasswordField1.setText("");
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
